@@ -1,0 +1,18 @@
+{
+  "name": "heilpraxix_client",
+  "version": "0.0.0",
+  "authors": [
+    "Uzair <uzi.vyper@gmail.com>"
+  ],
+  "description": "heilpraxix client project",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

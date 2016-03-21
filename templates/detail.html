@@ -1,0 +1,251 @@
+<div class="body-container">
+    <div class="heading" style="padding-top: 30px; padding-bottom: 30px">
+    {{doctor.firstName}} {{doctor.lastName}} Information
+    </div>
+    <div ng-if="editPermission || superuser">
+        <form name="updateForm" class="form-horizontal" role="form" ng-submit="updateData()">
+            <strong>Personal</strong><br>
+            <div class="form-group" ng-class="{'has-error': updateForm.fname.$invalid}">
+                <label for="fname" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.firstName" type="text" class="form-control" ng-required="true" id="fname" name="fname"
+                           placeholder="Enter First Name">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.lname.$invalid}">
+                <label for="lname" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.lastName" type="text" class="form-control" ng-required="true" id="lname" name="lname"
+                           placeholder="Enter Last Name">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.birthday.$invalid}">
+                <label for="birthdayBtn" class="col-sm-2 control-label">Birthday</label>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="input-group">
+                                <input type="text" name="birthday" class="form-control" datepicker-popup="{{format}}" ng-model="doctor.birthday" is-open="$parent.opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button id="birthdayBtn" type="button" class="btn btn-info" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.pdescription.$invalid}">
+                <label for="pdescription" class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.description" type="text" class="form-control" id="pdescription" name="pdescription"
+                           placeholder="Enter Personal Description" ng-required="true">
+                </div>
+            </div>
+            <strong>Address</strong><br>
+            <div class="form-group" ng-class="{'has-error': updateForm.street.$invalid}">
+                <label for="street" class="col-sm-2 control-label">Street</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.address.street" type="text" class="form-control" id="street" name="street"
+                           placeholder="Enter Street Name" ng-required="true">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.city.$invalid}">
+                <label for="city" class="col-sm-2 control-label">City</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.address.city" type="text" class="form-control" id="city" name="city"
+                           placeholder="Enter City Name" ng-required="true">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.state.$invalid}">
+                <label for="state" class="col-sm-2 control-label">State</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.address.state" type="text" class="form-control" id="state" name="state"
+                           placeholder="Enter State Name" ng-required="true">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.zipcode.$invalid}">
+                <label for="zipcode" class="col-sm-2 control-label">Zip Code</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.address.zipcode" type="text" class="form-control" id="zipcode" name="zipcode"
+                           placeholder="Enter Zip Code" ng-required="true">
+                </div>
+            </div>
+            <strong>Contact</strong><br>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-4">
+                    <input ng-model="doctor.contact.email" type="text" class="form-control" id="email"
+                           placeholder="Enter Email Address">
+                </div>
+                <span ng-if="doctor.plan.current != 'premium'" class="help-block label label-warning" style="vertical-align: -webkit-baseline-middle; font-size: 13px"><i class="glyphicon glyphicon-info-sign"></i> Only visible with premium account</span>
+            </div>
+            <div class="form-group">
+                <label for="fax" class="col-sm-2 control-label">Fax</label>
+                <div class="col-sm-4">
+                    <input ng-model="doctor.contact.fax" type="text" class="form-control" id="fax"
+                           placeholder="Enter Fax Number">
+                </div>
+                <span ng-if="doctor.plan.current == 'basic'" class="help-block label label-warning" style="vertical-align: -webkit-baseline-middle; font-size: 13px"><i class="glyphicon glyphicon-info-sign"></i> Visible with either business or premium account</span>
+            </div>
+            <div class="form-group">
+                <label for="skype" class="col-sm-2 control-label">Skype</label>
+                <div class="col-sm-4">
+                    <input ng-model="doctor.contact.skype" type="text" class="form-control" id="skype"
+                           placeholder="Enter Skype Name">
+                </div>
+                <span ng-if="doctor.plan.current != 'premium'" class="help-block label label-warning" style="vertical-align: -webkit-baseline-middle; font-size: 13px"><i class="glyphicon glyphicon-info-sign"></i> Only visible with premium account</span>
+            </div>
+            <div class="form-group">
+                <label for="telephone" class="col-sm-2 control-label">Telephone</label>
+                <div class="col-sm-4">
+                    <input ng-model="doctor.contact.telephone" type="text" class="form-control" id="telephone"
+                           placeholder="Enter Telephone">
+                </div>
+                <span ng-if="doctor.plan.current == 'basic'" class="help-block label label-warning" style="vertical-align: -webkit-baseline-middle; font-size: 13px"><i class="glyphicon glyphicon-info-sign"></i> Visible with either business or premium account</span>
+            </div>
+            <strong>Service</strong><br>
+            <div class="form-group" ng-class="{'has-error': updateForm.stype.$invalid}">
+                <label for="stype" class="col-sm-2 control-label">Type</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.service.type" type="text" class="form-control" id="stype" name="stype"
+                           placeholder="Enter Service Type" ng-required="true">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': updateForm.sdescription.$invalid}">
+                <label for="sdescription" class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    <input ng-model="doctor.service.description" type="text" class="form-control" id="sdescription" name="sdescription"
+                           placeholder="Enter Service Description" ng-required="true">
+                </div>
+            </div>
+            <strong>Plan</strong><br>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Request Plan</label>
+                <div class="col-sm-10">
+                    <div class="btn-group" dropdown is-open="status.isopen">
+                        <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                            {{planValue}} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ng-click="changePlanValue('No Change')">-</a></li>
+                            <li><a ng-click="changePlanValue('basic')">basic</a></li>
+                            <li><a ng-click="changePlanValue('business')">business</a></li>
+                            <li><a ng-click="changePlanValue('premium')">premium</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Current Plan</label>
+                <div class="col-sm-10">
+                    {{doctor.plan.current}}
+                </div>
+            </div>
+            <div class="form-group" ng-if="doctor.plan.requested">
+                <label class="col-sm-2 control-label">Pending Approval</label>
+                <div class="col-sm-10">
+                    {{doctor.plan.requested}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success" ng-disabled="!updateForm.$valid">Update</button>
+                    <button type="back" class="btn btn-primary" ui-sref="doctors-list">Back</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div ng-if="!(editPermission || superuser)">
+        <form name="infoForm" class="form-horizontal" role="form" style="font-size: 16px">
+            <div class = "bottom">
+                <span class="label label-info details-info">Personal</span><br><br>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Date of Birth</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{doctor.birthday}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{doctor.description}}</p>
+                    </div>
+                </div><br/>
+            </div><br/>
+
+            <div class = "bottom">
+                <span class="label label-info details-info">Address</span><br><br>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Street</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{doctor.address.street}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">City</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{doctor.address.city}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">State</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{doctor.address.state}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Zip Code</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{doctor.address.zipcode}}</p>
+                    </div>
+                </div><br>
+            </div><br>
+            <div class = "bottom" ng-if="doctor.contact">
+                <span class="label label-info details-info">Contact</span><br><br>
+                <div class="form-group" ng-if="doctor.contact.email">
+                    <label class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-static">{{doctor.contact.email}}</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="doctor.contact.fax">
+                    <label class="col-sm-2 control-label">Fax</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-static">{{doctor.contact.fax}}</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="doctor.contact.skype">
+                    <label class="col-sm-2 control-label">Skype</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-static">{{doctor.contact.skype}}</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="doctor.contact.telephone">
+                    <label class="col-sm-2 control-label">Telephone</label>
+                    <div class="col-sm-4">
+                        <p class="form-control-static">{{doctor.contact.telephone}}</p>
+                    </div>
+                </div><br>
+            </div><br>
+            <span class="label label-info details-info">Service</span><br><br>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Type</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{doctor.service.type}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{doctor.service.description}}</p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

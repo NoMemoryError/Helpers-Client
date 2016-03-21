@@ -1,0 +1,126 @@
+<div class="navbar navbar-fixed-top navbar-default">
+    <div class="navbar-header"><a class="navbar-brand">Doctors Directory</a><a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="glyphicon glyphicon-bar"></span>
+        <span class="glyphicon glyphicon-bar"></span>
+        <span class="glyphicon glyphicon-bar"></span>
+    </a>
+    </div>
+    <div class="container">
+        <!-- Collapsable nav bar -->
+        <!-- Your site name for the upper left corner of the site -->
+        <!-- Start of the nav bar content -->
+        <div class="navbar-collapse">
+            <!-- Other nav bar content -->
+            <!-- The drop down menu -->
+            <ul class="nav pull-right navbar-nav">
+                <li ng-if="loginStatus" ng-click="redirectDetailView()"><a>{{name}}</a></li>
+                <li ng-if="!loginStatus"><a data-toggle="modal" data-target=".bs-example-modal-sm" ><div ng-click="openSignUpModel()">Sign Up</div></a>
+                    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="[YOUR ACTION]" method="post" role="form" class="form-horizontal">
+
+                                        <input ng-model="user.fnameSignup" class="form-control" id="inputfname" placeholder="First Name" type="text" style="margin-bottom:.5em">
+
+                                        <input ng-model="user.lnameSignup" class="form-control" id="inputlname" placeholder="Last Name" type="text" style="margin-bottom:.5em">
+
+                                        <input ng-model="user.emailSignup" class="form-control" id="inputEmail2" placeholder="Email" type="email" style="margin-bottom:.5em">
+
+                                        <input ng-model="user.passwordSignup" class="form-control" id="inputPassword2" placeholder="Password" type="password" style="margin-bottom:.5em">
+
+                                        <input ng-model="user.cpasswordSignup" class="form-control" id="inputConfirmPassword2" placeholder="Confirm Password" type="password" style="margin-bottom:.5em">
+                                    </form>
+                                    <div ng-if="signupMessage">
+                                        {{signupMessage}}
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" ng-click="signup()">Sign Up</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="divider-vertical"></li>
+                <li ng-if="loginStatus"><a ng-click="logout()">Logout</a></li>
+                <li class="dropdown" ng-if="!loginStatus"> <a class="dropdown-toggle" data-toggle="dropdown" ng-click="openSignInModel()">Sign In <strong class="caret"></strong></a>
+
+                    <div class="pull-right dropdown-menu" style="padding: 10px;min-width:240px;">
+
+
+                        <form action="[YOUR ACTION]" method="post" role="form" class="form-horizontal">
+
+                            <input class="form-control" id="inputEmail1" placeholder="Email" type="email" style="margin-bottom:.5em">
+
+                            <input class="form-control" id="inputPassword1" placeholder="Password" type="password" style="margin-bottom:.5em">
+
+                            <div class="checkbox">
+                                <label><input type="checkbox"> Remember me</label>
+                            </div>
+
+                            <input class="btn btn-primary" style="margin-top:.75em;width: 100%; height: 32px; font-size: 13px;" ng-click="login()" type="button" name="commit" value="Sign In">
+                        </form>
+                        <div ng-if="loginMessage">
+                            <br>
+                            {{loginMessage}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="body-container">
+    <div class="search-container">
+        <div class="heading">Search</div>
+        <form name="searchForm" class="form-inline" role="form" ng-submit="search()">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only" for="advanceSearch">Advance Search</label>
+                    <input type="text" ng-model="advanceSearch" class="input-mysize form-control" id="advanceSearch" name="advanceSearch" placeholder="Advance Search">
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': searchForm.zipcode.$invalid}">
+                <label class="sr-only" for="zipcode">Zipcode</label>
+                <input type="number" ng-model="zipcode" class="form-control" id="zipcode" name="zipcode" placeholder="Zipcode">
+            </div>
+            <button type="submit" class="btn btn-success" ng-disabled="!searchForm.$valid">Search</button>
+            <button class="btn btn-primary" ng-disabled="!searchForm.$valid" ng-click="clearSearch()">Clear</button>
+        </form>
+    </div>
+
+    <div>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr class="info heading">
+                    <td>Name</td>
+                    <td>Type</td>
+                    <td ng-if="!superuser">Description</td>
+                    <td>Address</td>
+                    <td ng-if="superuser">Current Plan</td>
+                    <td ng-if="superuser">Requested Plan</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="doctor in doctors" ui-sref="doctor-detail({ _id: doctor.id })">
+                    <td style="vertical-align: middle">{{doctor.firstName}} {{doctor.lastName}}</td>
+                    <td style="vertical-align: middle">{{doctor.service.type}}</td>
+                    <td style="vertical-align: middle" ng-if="!superuser">{{doctor.description}}</td>
+                    <td style="vertical-align: middle">{{doctor.address.zipcode}} {{doctor.address.city}}</td>
+                    <td style="vertical-align: middle" ng-if="superuser">{{doctor.plan.current}}</td>
+                    <td style="vertical-align: middle" ng-if="superuser">{{doctor.plan.requested}}
+                        <button type="button" class="btn btn-primary" ng-if="doctor.plan.requested" ng-click="approve(doctor.username); $event.stopPropagation();">Approve</button>
+                    </td>
+                    <td style="vertical-align: middle" ng-if="superuser"><button type="button" class="btn btn-danger" ng-click="delete(doctor.username); $event.stopPropagation();">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
